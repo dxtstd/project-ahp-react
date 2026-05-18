@@ -7,13 +7,6 @@ import { exportRankingCSV } from "./utils/csvHelper";
 import InputKantin from "./components/InputKantin";
 import MatrixKriteria from "./components/MatrixKriteria";
 
-interface State {
-  dataKantin: TKantinMatrix[];
-  matrixKriteria: number[][];
-  hasilRanking: TKantinMatrix[];
-  crKriteria: number;
-}
-
 export default class App extends Component<object, AhpDashboardState> {
   constructor(props: object) {
     super(props);
@@ -26,15 +19,21 @@ export default class App extends Component<object, AhpDashboardState> {
       dataKantin: savedKantin ? JSON.parse(savedKantin) : [],
       matrixKriteria: savedMatrix ? JSON.parse(savedMatrix) : Array(n).fill(null).map(() => Array(n).fill(1)),
       hasilRanking: savedRanking ? JSON.parse(savedRanking) : [],
-      crKriteria: 0
+      crKriteria: 0,
+      bobotKriteria: [0.2, 0.2, 0.2, 0.2, 0.2]
     };
   }
 
-  componentDidUpdate(_prevProps: object, prevState: State) {
-    
+  componentDidUpdate(_prevProps: object, prevState: AhpDashboardState) {
     if (prevState.dataKantin !== this.state.dataKantin || prevState.matrixKriteria !== this.state.matrixKriteria) {
       const hasil = hitungAHP(this.state.dataKantin, this.state.matrixKriteria);
-      this.setState({ hasilRanking: hasil.hasilRanking, crKriteria: hasil.crKriteria }, () => {
+      
+      // TAMBAHAN: Masukkan hasil.bobotKriteria ke dalam setState
+      this.setState({ 
+        hasilRanking: hasil.hasilRanking, 
+        crKriteria: hasil.crKriteria,
+        bobotKriteria: hasil.bobotKriteria 
+      }, () => {
         localStorage.setItem("dataKantin", JSON.stringify(this.state.dataKantin));
         localStorage.setItem("matrixKriteria", JSON.stringify(this.state.matrixKriteria));
         sessionStorage.setItem("hasilRanking", JSON.stringify(this.state.hasilRanking));
@@ -44,7 +43,12 @@ export default class App extends Component<object, AhpDashboardState> {
 
   componentDidMount() {
     const hasil = hitungAHP(this.state.dataKantin, this.state.matrixKriteria);
-    this.setState({ crKriteria: hasil.crKriteria });
+    
+    // TAMBAHAN: Masukkan hasil.bobotKriteria saat aplikasi pertama kali dimuat
+    this.setState({ 
+      crKriteria: hasil.crKriteria,
+      bobotKriteria: hasil.bobotKriteria
+    });
   }
 
   handleAddKantin = () => {
@@ -92,7 +96,7 @@ export default class App extends Component<object, AhpDashboardState> {
   };
 
   render() {
-    const { dataKantin, matrixKriteria, hasilRanking, crKriteria } = this.state;
+    const { dataKantin, hasilRanking } = this.state;
 
     return (
       <div className="min-h-screen py-6 md:py-10 px-3 sm:px-6 md:px-10 font-sans">
@@ -102,28 +106,26 @@ export default class App extends Component<object, AhpDashboardState> {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight">Sistem Pendukung Keputusan</h1>
             <p className="text-lg sm:text-xl text-gray-600 mt-3 font-medium">Pemilihan Kantin Terbaik - Metode AHP</p>
           </div>
-
           <InputKantin
             dataKantin={dataKantin}
             onAdd={this.handleAddKantin}
             onDelete={this.handleDeleteKantin}
-            onDeleteAll={this.handleDeleteAllKantin} 
+            onDeleteAll={this.handleDeleteAllKantin}
             onUpdate={this.handleUpdateKantin}
             onImport={this.handleImportKantin}
           />
           <MatrixKriteria
-            matrixKriteria={matrixKriteria}
-            crKriteria={crKriteria}
+            matrixKriteria={this.state.matrixKriteria}
+            crKriteria={this.state.crKriteria}
+            bobotKriteria={this.state.bobotKriteria} // Pastikan ini sudah terhubung
             onMatrixChange={this.handleMatrixChange}
-            onResetMatrix={this.handleResetMatrix} 
+            onResetMatrix={this.handleResetMatrix}
           />
-
-          {/* TABEL HASIL RANKING PRESISI */}
           <div className="bg-gray-100 p-4 sm:p-6 md:p-10 rounded-xl shadow-sm border border-gray-200">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div className="flex items-center gap-3">
                 <Trophy size={32} className="text-yellow-500" />
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Hasil Ranking</h1>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Hasil Ranking (Live)</h1>
               </div>
               <button onClick={() => exportRankingCSV(hasilRanking)} className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2.5 rounded-lg font-bold shadow-md transition-all w-full sm:w-auto justify-center">
                 <Download size={18} /> Export Ranking

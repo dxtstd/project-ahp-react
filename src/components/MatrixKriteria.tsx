@@ -1,21 +1,19 @@
 // src/components/MatrixKriteria.tsx
 import { Component } from "react";
-import { RotateCcw } from "lucide-react"; // <-- Import icon
+import { RotateCcw } from "lucide-react";
 import { KRITERIA, type MatrixKriteriaProps } from "../types"; 
-
-export default class MatrixKriteria extends Component<MatrixKriteriaProps> {
+interface ExtendedProps extends MatrixKriteriaProps {
+  bobotKriteria?: number[];
+}
+export default class MatrixKriteria extends Component<ExtendedProps> {
   render() {
-    // Ambil onResetMatrix dari props
-    const { matrixKriteria, crKriteria, onMatrixChange, onResetMatrix } = this.props;
+    const { matrixKriteria, crKriteria, onMatrixChange, onResetMatrix, bobotKriteria } = this.props;
     
     return (
       <div className="bg-gray-100 p-4 sm:p-6 md:p-10 rounded-xl mb-8 shadow-sm border border-gray-200">
-        
-        {/* BAGIAN HEADER (JUDUL & TOMBOL) */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">cMatriks Kriteria (1-9)</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Matriks Kriteria (1-9)</h1>
           
-          {/* GRUP TOMBOL & STATUS CR */}
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <button 
               onClick={onResetMatrix} 
@@ -28,8 +26,6 @@ export default class MatrixKriteria extends Component<MatrixKriteriaProps> {
             </div>
           </div>
         </div>
-
-        {/* LEGENDA SKALA AHP */}
         <div className="mb-6 bg-white p-4 rounded-lg border border-gray-200 shadow-sm text-sm text-gray-700">
           <h3 className="font-bold mb-3 text-gray-900">Legenda Skala Kepentingan (Skala Saaty):</h3>
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2">
@@ -41,12 +37,9 @@ export default class MatrixKriteria extends Component<MatrixKriteriaProps> {
             <li><span className="font-bold text-blue-600">2, 4, 6, 8</span> = Nilai tengah (kompromi)</li>
           </ul>
         </div>
-        {/* AKHIR LEGENDA */}
-        
-        {/* TABEL MATRIKS (Tetap Sama) */}
         <div className="p-4 sm:p-6 md:p-8 border border-gray-300 rounded-xl shadow-md bg-white">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-175 table-fixed border-separate border-spacing-2 text-sm md:text-base">
+            <table className="w-full min-w-[700px] table-fixed border-separate border-spacing-2 text-sm md:text-base">
               <thead>
                 <tr>
                   <th className="bg-gray-300 rounded-lg p-3 text-center w-32 font-bold text-gray-800">Kriteria</th>
@@ -77,6 +70,21 @@ export default class MatrixKriteria extends Component<MatrixKriteriaProps> {
             </table>
           </div>
         </div>
+        {bobotKriteria && bobotKriteria.length > 0 && (
+          <div className="mt-6 p-4 sm:p-6 border border-blue-200 bg-blue-50 rounded-xl shadow-sm">
+            <h3 className="font-bold text-lg text-blue-900 mb-4">Bobot Prioritas Kriteria:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+              {KRITERIA.map((k, idx) => (
+                <div key={k} className="bg-white p-3 rounded-lg border border-blue-100 shadow-sm text-center flex flex-col justify-center">
+                  <span className="text-xs sm:text-sm text-gray-500 font-semibold mb-1">{k}</span>
+                  <span className="text-lg sm:text-xl font-bold text-blue-700">
+                    {(bobotKriteria[idx] * 100).toFixed(1)}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

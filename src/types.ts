@@ -23,6 +23,7 @@ export interface AhpDashboardState {
   matrixKriteria: number[][];
   hasilRanking: TKantinMatrix[];
   crKriteria: number;
+  bobotKriteria: number[];
 }
 
 // 4. Tipe Props untuk InputKantin

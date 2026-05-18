@@ -1,20 +1,11 @@
 // src/components/InputKantin.tsx
-import React, { Component, type ChangeEvent } from "react";
+import { Component, type ChangeEvent } from "react";
 import { Trash, Plus, Download, Upload } from "lucide-react";
-import { type TKantinMatrix } from "../types";
+import { type InputKantinProps } from "../types"; 
 import EditableCell from "./EditableCell";
 import { exportKantinCSV, importKantinCSV } from "../utils/csvHelper";
 
-interface Props {
-  dataKantin: TKantinMatrix[];
-  onAdd: () => void;
-  onDelete: (id: string) => void;
-  onDeleteAll: () => void; // <-- Tambahan Props
-  onUpdate: (id: string, field: keyof TKantinMatrix, val: string | number) => void;
-  onImport: (newData: TKantinMatrix[]) => void;
-}
-
-export default class InputKantin extends Component<Props> {
+export default class InputKantin extends Component<InputKantinProps> {
   handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) importKantinCSV(e.target.files[0], this.props.onImport);
     e.target.value = ""; 
@@ -29,7 +20,7 @@ export default class InputKantin extends Component<Props> {
         
         <div className="p-4 sm:p-6 md:p-8 border border-gray-300 rounded-xl shadow-md bg-white">
           <div className="overflow-x-auto w-full mb-6">
-            <table className="w-full min-w-[900px] table-fixed border-separate border-spacing-2 text-sm md:text-base">
+            <table className="w-full min-w-225 table-fixed border-separate border-spacing-2 text-sm md:text-base">
               <thead>
                 <tr>
                   <th className="bg-gray-300 text-gray-800 p-3 rounded-lg text-center w-12 font-bold">No</th>

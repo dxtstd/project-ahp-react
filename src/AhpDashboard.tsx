@@ -1,7 +1,7 @@
-// src/App.tsx
-import React, { Component } from "react";
+// src/AhpDashboard.tsx
+import { Component } from "react";
 import { Trophy, Download } from "lucide-react";
-import { KRITERIA, type TKantinMatrix } from "./types";
+import { KRITERIA, type TKantinMatrix, type AhpDashboardState } from "./types";
 import { hitungAHP } from "./utils/ahpCalc";
 import { exportRankingCSV } from "./utils/csvHelper";
 import InputKantin from "./components/InputKantin";
@@ -14,7 +14,7 @@ interface State {
   crKriteria: number;
 }
 
-export default class App extends Component<object, State> {
+export default class App extends Component<object, AhpDashboardState> {
   constructor(props: object) {
     super(props);
     const n = KRITERIA.length;
@@ -30,7 +30,8 @@ export default class App extends Component<object, State> {
     };
   }
 
-  componentDidUpdate(prevProps: object, prevState: State) {
+  componentDidUpdate(_prevProps: object, prevState: State) {
+    
     if (prevState.dataKantin !== this.state.dataKantin || prevState.matrixKriteria !== this.state.matrixKriteria) {
       const hasil = hitungAHP(this.state.dataKantin, this.state.matrixKriteria);
       this.setState({ hasilRanking: hasil.hasilRanking, crKriteria: hasil.crKriteria }, () => {
@@ -82,27 +83,40 @@ export default class App extends Component<object, State> {
     this.setState({ matrixKriteria: newMatrix });
   };
 
+  handleResetMatrix = () => {
+    if (window.confirm("Apakah kamu yakin ingin mereset semua nilai matriks ke angka 1?")) {
+      const n = KRITERIA.length;
+      const resetMatrix = Array(n).fill(null).map(() => Array(n).fill(1));
+      this.setState({ matrixKriteria: resetMatrix });
+    }
+  };
+
   render() {
     const { dataKantin, matrixKriteria, hasilRanking, crKriteria } = this.state;
 
     return (
       <div className="min-h-screen py-6 md:py-10 px-3 sm:px-6 md:px-10 font-sans">
         <div className="max-w-6xl mx-auto">
-          
+
           <div className="text-center mb-8 md:mb-12">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight">Sistem Pendukung Keputusan</h1>
             <p className="text-lg sm:text-xl text-gray-600 mt-3 font-medium">Pemilihan Kantin Terbaik - Metode AHP</p>
           </div>
 
-          <InputKantin 
-            dataKantin={dataKantin} 
-            onAdd={this.handleAddKantin} 
-            onDelete={this.handleDeleteKantin} 
-            onDeleteAll={this.handleDeleteAllKantin} // <-- INI YANG BARU
-            onUpdate={this.handleUpdateKantin} 
-            onImport={this.handleImportKantin} 
+          <InputKantin
+            dataKantin={dataKantin}
+            onAdd={this.handleAddKantin}
+            onDelete={this.handleDeleteKantin}
+            onDeleteAll={this.handleDeleteAllKantin} 
+            onUpdate={this.handleUpdateKantin}
+            onImport={this.handleImportKantin}
           />
-          <MatrixKriteria matrixKriteria={matrixKriteria} crKriteria={crKriteria} onMatrixChange={this.handleMatrixChange} />
+          <MatrixKriteria
+            matrixKriteria={matrixKriteria}
+            crKriteria={crKriteria}
+            onMatrixChange={this.handleMatrixChange}
+            onResetMatrix={this.handleResetMatrix} 
+          />
 
           {/* TABEL HASIL RANKING PRESISI */}
           <div className="bg-gray-100 p-4 sm:p-6 md:p-10 rounded-xl shadow-sm border border-gray-200">
@@ -115,10 +129,10 @@ export default class App extends Component<object, State> {
                 <Download size={18} /> Export Ranking
               </button>
             </div>
-            
+
             <div className="p-4 md:p-8 border border-gray-300 rounded-xl shadow-md bg-white">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[500px] table-fixed border-separate border-spacing-2 text-sm md:text-base">
+                <table className="w-full min-w-125 table-fixed border-separate border-spacing-2 text-sm md:text-base">
                   <thead>
                     <tr>
                       <th className="bg-gray-300 rounded-lg p-3 text-center w-24 font-bold text-gray-800">Peringkat</th>
@@ -153,7 +167,6 @@ export default class App extends Component<object, State> {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     );

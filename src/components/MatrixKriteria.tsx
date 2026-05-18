@@ -13,7 +13,7 @@ export default class MatrixKriteria extends Component<MatrixKriteriaProps> {
         
         {/* BAGIAN HEADER (JUDUL & TOMBOL) */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Matriks Kriteria (1-9)</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">cMatriks Kriteria (1-9)</h1>
           
           {/* GRUP TOMBOL & STATUS CR */}
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">

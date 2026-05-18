@@ -16,7 +16,7 @@ export default class InputKantin extends Component<InputKantinProps> {
     
     return (
       <div className="bg-gray-100 p-4 sm:p-6 md:p-10 rounded-xl mb-8 shadow-sm border border-gray-200">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-gray-900">Tahap 1: Input Data Kantin (1-9)</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-gray-900">Input Data Kantin (1-9)</h1>
         
         <div className="p-4 sm:p-6 md:p-8 border border-gray-300 rounded-xl shadow-md bg-white">
           <div className="overflow-x-auto w-full mb-6">

@@ -1,10 +1,8 @@
-// src/utils/ahpCalc.ts
 import { KRITERIA, type TKantinMatrix, RI_TABLE } from "../types";
 
 export function hitungAHP(dataKantin: TKantinMatrix[], matrixKriteria: number[][]) {
   const n = KRITERIA.length;
   
-  // 1. Hitung Bobot dan CR Kriteria TERLEBIH DAHULU (Terlepas dari ada data kantin atau tidak)
   const colSums = new Array(n).fill(0);
   for (let j = 0; j < n; j++) {
     for (let i = 0; i < n; i++) colSums[j] += matrixKriteria[i][j];

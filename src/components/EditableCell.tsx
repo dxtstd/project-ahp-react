@@ -1,4 +1,3 @@
-// src/components/EditableCell.tsx
 import React, { Component, createRef } from "react";
 import { Check, X, Edit3 } from "lucide-react";
 import { type TKantinMatrix } from "../types";

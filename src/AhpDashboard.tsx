@@ -1,4 +1,3 @@
-// src/AhpDashboard.tsx
 import { Component } from "react";
 import { Trophy, Download } from "lucide-react";
 import { KRITERIA, type TKantinMatrix, type AhpDashboardState } from "./types";
@@ -28,7 +27,6 @@ export default class App extends Component<object, AhpDashboardState> {
     if (prevState.dataKantin !== this.state.dataKantin || prevState.matrixKriteria !== this.state.matrixKriteria) {
       const hasil = hitungAHP(this.state.dataKantin, this.state.matrixKriteria);
       
-      // TAMBAHAN: Masukkan hasil.bobotKriteria ke dalam setState
       this.setState({ 
         hasilRanking: hasil.hasilRanking, 
         crKriteria: hasil.crKriteria,
@@ -44,7 +42,6 @@ export default class App extends Component<object, AhpDashboardState> {
   componentDidMount() {
     const hasil = hitungAHP(this.state.dataKantin, this.state.matrixKriteria);
     
-    // TAMBAHAN: Masukkan hasil.bobotKriteria saat aplikasi pertama kali dimuat
     this.setState({ 
       crKriteria: hasil.crKriteria,
       bobotKriteria: hasil.bobotKriteria
@@ -117,7 +114,7 @@ export default class App extends Component<object, AhpDashboardState> {
           <MatrixKriteria
             matrixKriteria={this.state.matrixKriteria}
             crKriteria={this.state.crKriteria}
-            bobotKriteria={this.state.bobotKriteria} // Pastikan ini sudah terhubung
+            bobotKriteria={this.state.bobotKriteria} 
             onMatrixChange={this.handleMatrixChange}
             onResetMatrix={this.handleResetMatrix}
           />

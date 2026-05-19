@@ -41,5 +41,5 @@ export interface MatrixKriteriaProps {
   matrixKriteria: number[][];
   crKriteria: number;
   onMatrixChange: (row: number, col: number, value: string) => void;
-  onResetMatrix: () => void; // <-- Tambahkan baris ini
+  onResetMatrix: () => void;
 }

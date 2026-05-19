@@ -1,4 +1,3 @@
-// src/components/ParticlesBackground.tsx
 import { useEffect, useState, useMemo } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { type ISourceOptions } from "@tsparticles/engine";

@@ -1,4 +1,3 @@
-// src/utils/csvHelper.ts
 import { type TKantinMatrix } from "../types";
 
 export const exportKantinCSV = (data: TKantinMatrix[]) => {

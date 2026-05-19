@@ -22,10 +22,8 @@ export function hitungAHP(dataKantin: TKantinMatrix[], matrixKriteria: number[][
   const ci = (lambdaMax - n) / (n - 1);
   const crKriteria = ci / (RI_TABLE[n - 1] || 1.49);
 
-  // 2. Jika data kantin kosong, kembalikan hasil crKriteria yang sudah dihitung, dengan ranking kosong
   if (dataKantin.length === 0) return { hasilRanking: [], crKriteria, bobotKriteria };
 
-  // 3. Jika data kantin ADA, barulah lanjut menghitung skor akhir (AHP Absolute)
   const total = { harga: 0, kebersihan: 0, fasilitas: 0, varian_menu: 0, pelayanan: 0 };
   dataKantin.forEach(k => {
     total.harga += k.harga; 

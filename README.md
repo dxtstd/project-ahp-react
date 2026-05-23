@@ -9,3 +9,25 @@ CR < 0.1
 - Chritopher Samuel - 25210069 <br>
 - Luqman Zaky - 25210005 <br>
 - Asmasari Djaelani - 25210079 
+
+## Bagaimana caranya menjalankan?
+Pastikan nodejs dan npm terinstall pada device anda, lalu jalankan perintah
+
+```bash
+npm install
+```
+Setelahnya dapat melihat package.json script apa saja
+untuk developing bisa memakai untuk running localhost
+```bash
+npm run dev
+```
+
+Untuk build maka bisa menjalankan perintah
+```bash
+npm run build
+```
+
+Step terakhir saya lakukan agar dapat diakses internet adalah
+```bash
+npm run deploy
+```
